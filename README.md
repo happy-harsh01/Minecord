@@ -8,13 +8,12 @@ How to contribute ?
 First Fork the repositry
 Then istall these python packages
 You must be able to use these packages
-<ul>
-  <l>json
-  <l>os
-  <l>discord
-  <l>discord.ext
-  <l>requests
-  <l>random
-  <l>time
-  <l>asyncio
-<ul>
+  *json
+  *os
+  *discord
+  *discord.ext
+  *requests
+  *random
+  *time
+  *asyncio
+
