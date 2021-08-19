@@ -1,15 +1,14 @@
 import json
-import discord
-profile = ".\main_resources\profile.json"
-channel = ".\main_resources\channels.json"
+profile = ".\\main_resources\\profile.json"
+channel = ".\\main_resources\\channels.json"
+restricted_channels = ".\\main_resources\\restricted_channels.json"
 
-class func:
-    """Functions which yield user details"""
-    def __init__(self):
-        pass
 
-        # Game Functions
-    def has_profile(self, ctx):
+class Func:
+
+    # Game Functions
+    @staticmethod
+    async def has_profile(ctx):
         """Checking if user has created a Profile or not"""
         with open(profile, 'r') as f:
             profiles = json.load(f)
@@ -18,29 +17,14 @@ class func:
         else:
             return False
 
-    def is_not_restricted_channel(self, ctx):
-        """Checking if the user is playing in the correct channel"""
-        with open(channel, 'r') as f:
-            channels = json.load(f)
-            if str(ctx.guild.id) in channels:
-                over = channels[str(ctx.guild.id)]['over']
-                nether = channels[str(ctx.guild.id)]['nether']
-                end = channels[str(ctx.guild.id)]['end']
-                ch_id = str(ctx.channel.id)
-                if ch_id == over or ch_id == nether or ch_id == end:
-                    return True
-                else:
-                    return False
-            else:
-                return True
-
-    def is_over_channel(self, ctx):
+    @staticmethod
+    async def is_over_channel(ctx):
         """Checking if the user is playing in the Over World channel or not."""
         with open(channel, 'r') as f:
-            channels = json.load(f)
+            channels = json.load(f)[str(ctx.guild.id)]['over']
         try:
-            over_channel = channels[str(ctx.guild.id)]['over']
-        except ValueError:
+            over_channel = channels
+        except KeyError:
             # If they have not set up channels lets them play in any channel.
             return True
         if str(ctx.channel.id) == over_channel:
@@ -48,59 +32,54 @@ class func:
         else:
             return False
 
-
-
-    async def inv(self, ctx, items, values: int):
-        """Adding items to inventory"""
+    @staticmethod
+    async def add_inv(ctx, item, quantity: int):
+        """Adds single item of definite quantity to inventory"""
         with open(profile, 'r') as f:
-            profiles = json.load(f)
-        inv = profiles[str(ctx.author.id)]["inv"]
-        if items in inv:
-            a = inv[items]
-            inv[items] = a + values
+            inv = json.load(f)[str(ctx.author.id)]["inv"]
+        if item in inv:
+            a = inv[item]
+            inv[item] = a + quantity
         else:
-            inv["item"] = values
-            json.dump(inv, f, indent=4)
+            inv.update({item: quantity})
+        with open(profile, 'w') as f:
+            json.dump(f, inv, indent= 4)
 
-    async def chanege_tools(self, ctx, tool):
-        """Intalling tools in profile"""
-        with open(profile, 'r') as f:
-            profiles = json.load(f)
-            inv = profiles[str(ctx.author.id)]["inv"]
-            default = ["sword", "axe", "pickaxe", "hoe", "shovel"]
-            for items in inv:
-                for tools in default:
-                    if tools in items:
-                        pass
-                    else:
-                        pass
-
-    def search_inv_item(self, ctx, items: list):
-        """Search item in inventory"""
+    @staticmethod
+    async def search_inv_item(ctx, *items):
+        """Searches for an item in the inventory, if item is present returns True else returns False"""
         with open(profile, "r") as f:
-            profiles = json.load(f)
-        inv = profiles[str(ctx.author.id)]["inv"]
+            inv = json.load(f)[str(ctx.author.id)]["inv"]
+        item_found = False
         for item in items:
             if item == list(inv.keys()):
-                    return  True
+                    item_found = True
+            else:
+                item_found = False
+        return item_found
 
-    def info(self, ctx, info_type):
+    @staticmethod
+    def name(ctx):
+        with open(profile, 'r') as f:
+            name = json.load(f)[str(ctx.author.id)]["name"]
+            return name
+
+    @staticmethod
+    async def info(ctx, info_type):
         """Returns person's info"""
-        with open(profile,'r') as f:
+        with open(profile, 'r') as f:
             data = json.load(f)
             data = data[str(ctx.author.id)][info_type]
             return data
 
-    def inv_tool(self, ctx, tool_type):
-        """Returns person's info"""
-        with open(profile,'r') as f:
-            data = json.load(f)
-            data = data[str(ctx.author.id)]["inv"][tool_type]
-            return data
-
-    def modify(self,ids , item:str, modification:str):
-        """Opens profiles.json and modifies it."""
-        with open(profile, 'w') as f :
-            info = json.load(f)
-            info[str(ids)][item] = modification
-            json.dump(info, f, indent=4)
+    @staticmethod
+    async def is_not_restricted_channel(message):
+        with open(restricted_channels, "r") as f:
+            channels = json.load(f)
+        try:
+            if message.channel.id in channels[str(message.guild.id)]:
+                return False
+            else:
+                return True
+        except KeyError:
+            pass
