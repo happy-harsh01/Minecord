@@ -146,4 +146,3 @@ class Action(commands.Cog):
 
 def setup(bot):
     bot.add_cog(Action(bot))
-
