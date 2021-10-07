@@ -30,6 +30,13 @@ class GameFunction:
         with open(profile, 'w') as f:
             json.dump(profiles, f, indent=4)
 
+    async def create_profile(self, ctx, name):
+        with open(profile, 'r') as f:
+            profiles = json.load(f)
+        user_profile = {"name": name, "health": 100, "max_health": 100, "world": "over", "location":"home", "armour":{}, "inv":{}, "inv_size": 25, "places":[], "adv":[], "builds":[], "xp":0} 
+        profiles.update(user_profile)
+        with open(profile, 'w') as f:
+            json.dump(profiles, f, indent=4)
     async def armour_durability_modifier(self, ctx, armour, value):
     """Mofidfies armour durability"""
         with open(profile, 'r') as f:
