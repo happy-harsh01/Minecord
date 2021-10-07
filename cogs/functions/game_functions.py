@@ -77,7 +77,7 @@ class GameFunction:
                 inv.pop(item)
                 if 'pickaxe' in item or 'sword' in item or 
                 'axe' in item or 'shovel' in item or 'hoe' in item:
-                    ctx.send(f"{ctx.author.mention} your {item} broke down")
+                    await ctx.send(f"{ctx.author.mention} your {item} broke down")
             else:
                 inv[item] += value
         else:
@@ -114,31 +114,44 @@ class GameFunction:
         with open(profile, 'w') as f:
             json.dump(profiles, f, indent=4)
 
-    async def place_searcher(self, ctx, name):
+    async def place_searcher(self, ctx, place):
     """Searches for place in user profile, if found returns true"""
         with open(profile, 'r') as f:
             profiles = json.load(f)
+        if place in profiles[str(ctx.author.id)]["places"]:
+            return True
+        else:
+            return False
         with open(profile, 'w') as f:
             json.dump(profiles, f, indent=4)
 
-    async def adv_manager(self, ctx, name):
+    async def adv_manager(self, ctx, adv):
     """Adds advancements in the user profile"""
         with open(profile, 'r') as f:
             profiles = json.load(f)
+        profiles[str(ctx.author.id)]["adv"].append(adv)
         with open(profile, 'w') as f:
             json.dump(profiles, f, indent=4)
    
-    async def adv_searcher(self, ctx, name):
+    async def adv_searcher(self, ctx, adv):
     """Searches for advancement in profile, if found returns true"""
         with open(profile, 'r') as f:
             profiles = json.load(f)
+        if adv in profiles[str(ctx.author.id)]["adv"]:
+            return True
+        else:
+            return False
         with open(profile, 'w') as f:
             json.dump(profiles, f, indent=4)
 
-    async def builds_manager(self, ctx, name):
+    async def builds_manager(self, ctx, build, remove=False):
     """Adds or removes builds from profile"""
         with open(profile, 'r') as f:
             profiles = json.load(f)
+        if remove is False:
+            profiles[str(ctx.author.id)]["builds"].append(build)
+        else:
+            profiles[str(ctx.author.id)]["builds"].pop(build)
         with open(profile, 'w') as f:
             json.dump(profiles, f, indent=4)
 
