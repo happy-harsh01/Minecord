@@ -19,7 +19,11 @@ class GameFunction:
             profiles = json.load(f)
             health = profiles[str(ctx.author.id)]["health"]
         if health > 100:
-            pass
+            armour = profiles[str(ctx.author.id)]["armour"]
+            armour = list(armour.keys())
+            for i in range(value):
+                health += value
+                self.armour_durability_modifier(ctx, random.choice(armour), random.choice([-1, -2, -3])
         else:
             if health == -value:
                 self.kill(ctx)
@@ -155,10 +159,14 @@ class GameFunction:
         with open(profile, 'w') as f:
             json.dump(profiles, f, indent=4)
 
-    async def build_searcher(self, ctx, name):
+    async def build_searcher(self, ctx, build):
     """Searches for builds in profile, if found returns true"""
         with open(profile, 'r') as f:
             profiles = json.load(f)
+        if build in profiles [str(ctx.author.id)]["builds"]:
+            return True
+        else:
+            return False
         with open(profile, 'w') as f:
             json.dump(profiles, f, indent=4)
     
@@ -166,6 +174,10 @@ class GameFunction:
     """"Changes user's location"""
         with open(profile, 'r') as f:
             profiles = json.load(f)
+        if world != False:
+            profiles[str(ctx.author.id)]["world"] = world
+        if location != False:
+            profiles[str(ctx.author.id)]["location"] = location
         with open(profile, 'w') as f:
             json.dump(profiles, f, indent=4)
 
