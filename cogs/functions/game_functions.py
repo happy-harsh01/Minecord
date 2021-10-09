@@ -1,5 +1,7 @@
 from discord.ext import commands
 import json
+import random
+import asyncio
 profile = ".//main_resources//profiles.json"
 info = ".//main_resources//info.json"
 
@@ -41,6 +43,7 @@ class GameFunction:
         profiles.update(user_profile)
         with open(profile, 'w') as f:
             json.dump(profiles, f, indent=4)
+
     async def armour_durability_modifier(self, ctx, armour, value):
     """Mofidfies armour durability"""
         with open(profile, 'r') as f:
@@ -56,10 +59,34 @@ class GameFunction:
         with open(profile, 'w') as f:
             json.dump(profiles, f, indent=4)
 
-    async def equipt_armour(self, ctx, name):
+    async def equipt_armour(self, ctx, armour):
     """Equipts the armour and increases the max health"""
         with open(profile, 'r') as f:
             profiles = json.load(f)
+        armours = profiles[str(ctx.author.id)]["armour"]
+        with open(info, 'r') as f:
+            info = json.load(f)
+        armour_dur = info["armour"][armour]
+        health_increase = info["armour_health"][armour]
+        # Checking if armour already exists
+        type = armour.split("_")[1]
+        types = list(armours.keys())
+        def func(item):
+            items = item.split("_")[1]
+            return items
+        types = list(map(func, types))
+        if type in armours:
+            def check(m):
+                return m.author == ctx.author and m.channel == ctx channel
+            try:
+                await ctx.wait_for('message', timeout=60.0, check=check)
+            except asyncio.TimeoutError:
+                await ctx.send(f"{ctx.author.mention} did not replied in time")
+                return
+        else: # else if armour is not already equipted
+            armours.update({armour: armour_dur})
+            profiles[str(ctx.author.id)]["max_health"] += health_increase
+        profiles[str(ctx.author.id)]["armour"] = armours
         with open(profile, 'w') as f:
             json.dump(profiles, f, indent=4)
 
