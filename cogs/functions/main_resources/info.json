@@ -1,1 +1,142 @@
-{}
+{
+  "block": [
+    "log",
+    "plank",
+    "cobblestone",
+    "stone",
+    "dirt",
+    "andesite",
+    "diorite",
+    "gravel",
+    "sand",
+    "glass",
+    "iron_ore",
+    "coal",
+    "gold_ore",
+    "nether_quartz",
+    "netherrack",
+    "obsidian",
+    "ancient_debris",
+    "nether_brick",
+    "end_stone",
+    "wooden_stair",
+    "stone_stair",
+    "cobblestone_stair"
+  ],
+  "jewels": [
+    "iron_ingot",
+    "gold_ingot",
+    "diamond",
+    "emerald",
+    "redstone_dust",
+    "lapiz_lazuli"    
+  ],
+  "usables": [
+    "chest",
+    "leather",
+    "feather",
+    "wool",
+     "bone",
+     "web" 
+    
+  ],
+  "food":[
+    "wheat",
+    "potato",
+    "carrot",
+    "beet_root",
+    "bread",
+    "raw_salmon",
+    "raw_cod",
+    "raw_beef",
+    "cooked_beef",
+    "raw_chicken",
+    "cooked_chicken",
+    "raw_mutton",
+    "cooked_mutton",
+    "rotten_flesh",
+    "spider_eye",
+    "sugar_cane",
+    "pumpkin_pie",
+    "melon_slice"
+  ],
+  "tools": {
+    "bow": 50,
+    "fishing_rod": 100,
+    
+    "wooden_sword": 45,
+    "wooden_pickaxe": 45,
+    "wooden_axe": 45,
+    "wooden_shovel": 45,
+    "wooden_hoe": 45,
+
+    "stone_sword": 75,
+    "stone_pickaxe": 75,
+    "stone_axe": 75,
+    "stone_shovel": 75,
+    "stone_hoe": 75,
+
+    "iron_sword": 125,
+    "iron_pickaxe": 125,
+    "iron_axe": 125,
+    "iron_shovel": 125,
+    "iron_hoe": 125,
+
+    "gold_sword": 190,
+    "gold_pickaxe": 190,
+    "gold_axe": 190,
+    "gold_shovel": 190,
+    "gold_hoe": 190,
+
+    "diamond_sword": 250,
+    "diamond_pickaxe": 250,
+    "diamond_axe": 250,
+    "diamond_shovel": 250,
+    "diamond_hoe": 2505,
+
+    "netherite_sword": 300,
+    "netherite_pickaxe": 300,
+    "netherite_axe": 300,
+    "netherite_shovel": 300,
+    "netherite_hoe": 300
+  },
+  "armour_health":{
+    "leather_helmet": 10,
+    "leather_chestplate": 15,
+    "leather_leggings": 15,
+    "leather_boots": 10,
+    
+    "iron_helmet": 10,
+    "iron_chestplate": 40,
+    "iron_leggings": 30,
+    "iron_boots": 10,
+
+    "gold_helmet": 30,
+    "gold_chestplate": 80,
+    "gold_leggings": 60,
+    "gold_boots": 30,
+
+    "diamond_helmet": 40,
+    "diamond_chestplate": 90,
+    "diamond_leggings": 80,
+    "diamond_boots": 40,
+
+    "netherite_helmet": 50,
+    "netherite_chestplate": 100,
+    "netherite_leggings": 100,
+    "netherite_boots": 50
+  },
+  "id": {},
+  mobs: {
+    "cow": ["raw_beef", "leather"],
+    "chicken": ["raw_chicken", "feather"],
+    "pig": ["raw_porkchop"],
+    "sheep": ["raw_mutton", "wool"],
+    "zombie": ["rotten_flesh"],
+    "skeleton": ["arrow", "bow", "bone"],
+    "creeper": ["gunpowder"],
+    "spider": ["spider_eye", "web"],
+    "enderman": ["ender_pearl"],
+    "iron_golem": ["iron_ingot", "poppy"]
+  }
+}
