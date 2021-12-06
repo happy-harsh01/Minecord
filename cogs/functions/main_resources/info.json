@@ -21,7 +21,8 @@
         "end_stone",
         "wooden_stair",
         "stone_stair",
-        "cobblestone_stair"
+        "cobblestone_stair",
+        "quartz_stair"
     ],
     "jewels": [
         "iron_ingot",
@@ -29,7 +30,8 @@
         "diamond",
         "emerald",
         "redstone_dust",
-        "lapiz_lazuli"
+        "lapiz_lazuli",
+        "netherite_scarp"
     ],
     "usables": [
         "chest",
@@ -48,7 +50,9 @@
         "raw_salmon",
         "raw_cod",
         "raw_beef",
-        "cooked_beef",
+        "steak",
+        "raw_porkchop",
+        "coocked_porkchop",
         "raw_chicken",
         "cooked_chicken",
         "raw_mutton",
@@ -180,9 +184,11 @@
         "raw_salmon": "<:raw_salmon:900720105875472424>",
         "raw_cod": "<:raw_cod:900719769181908992>",
         "raw_beef": "<:raw_beef:898894135275180072>",
-        "cooked_beef": "<:steak:898894160558424124>",
+        "steak": "<:steak:898894160558424124>",
         "raw_chicken": "<:raw_chicken:899611689215983697>",
         "cooked_chicken": "<:cooked_chicken:899611714738348082>",
+        "raw_porkchop": "<:raw_porkchop:898875541850054686>",
+        "cooked_porkchop": "<:cooked_porkchop:898875633663373342>",
         "raw_mutton": "<:raw_mutton:899611736234139648>",
         "cooked_mutton": "<:cooked_mutton:899611753049104384>",
         "rotten_flesh": "<:rotten_flesh:900724427455619192>",
@@ -214,7 +220,7 @@
         "gold_hoe": "<:gold_hoe:898880926514282516>",
         "diamond_sword": "<:diamond_sword:898878321255936061>",
         "diamond_pickaxe": "<:diamond_pickaxe:898878427619266562>",
-        "diamond_axe": "<:diamond_axe:>",
+        "diamond_axe": "<a:diamond_axe:898878850962968598>",
         "diamond_shovel": "<:diamond_shovel:898878986329931786>",
         "diamond_hoe": "<:diamond_hoe:898879165158293505>",
         "netherite_sword": "<:netherite_sword:898876037151219773>",
@@ -241,9 +247,12 @@
         "netherite_helmet": "<:netherite_helmet:909720065639874620>",
         "netherite_chestplate": "<:netherite_chestplate:909720081569828907>",
         "netherite_leggings": "<:netherite_leggings:909720096467992586>",
-        "netherite_boots": "<:netherite_boots:909720110346932314>"
-        },
-    "mobs": {
+        "netherite_boots": "<:netherite_boots:909720110346932314>",
+        "stick": "<:stick:917330163304366080>",
+        "quartz_stait": "<:quartz_stair:899950417386029087>",
+        "netherite_scarp": "<:netherite_scarp:917372181523070987>"
+    },
+    "mob": {
         "cow": [
             "raw_beef",
             "leather"
@@ -282,66 +291,349 @@
             "poppy"
         ]
     },
-    "spawn": {},
+    "spawn": {
+    },
     "alias": {
-        "fishing_rod": ["frod"] ,
-        "wooden_sword": ["wsword"] , 
-        "wooden_pickaxe": ["wpick"] ,
-        "wooden_axe": ["waxe"] ,
-        "wooden_shovel": ["wshovel"] ,
-        "wooden_hoe": ["whoe"],
-        "stone_sword": ["ssword"] ,
-        "stone_pickaxe": ["spick"],
-        "stone_axe": ["saxe"],
-        "stone_shovel": ["sshovel"],
-        "stone_hoe": ["shoe"],
-        "iron_sword": ["isword"] ,
-        "iron_pickaxe": ["ipick"],
-        "iron_axe": ["iaxe"],
-        "iron_shovel": ["ishovel"],
-        "iron_hoe": ["ihoe"],
-        "gold_sword": ["gsword"] ,
-        "gold_pickaxe": ["gpick"],
-        "gold_axe": ["gaxe"],
-        "gold_shovel": ["gshovel"],
-        "gold_hoe": ["ghoe"],
-        "diamond_sword": ["dsword"] ,
-        "diamond_pickaxe": ["dpick"],
-        "diamond_axe": ["daxe"],
-        "diamond_shovel": ["dshovel"],
-        "diamond_hoe": ["dhoe"],
-        "netherite_sword": ["nsword"] ,
-        "netherite_pickaxe": ["npick"],
-        "netherite_axe": ["naxe"],
-        "netherite_shovel": ["nshovel"],
-        "netherite_hoe": ["nhoe"],
-
-        "leather_helmet": 50,
-        "leather_chestplate": 75,
-        "leather_leggings": 70,
-        "leather_boots": 60,
-        "iron_helmet": 100,
-        "iron_chestplate": 225,
-        "iron_leggings": 200,
-        "iron_boots": 100,
-        "gold_helmet": 70,
-        "gold_chestplate": 112,
-        "gold_leggings": 105,
-        "gold_boots": 100,
-        "diamond_helmet": 300,
-        "diamond_chestplate": 450,
-        "diamond_leggings": 400,
-        "diamond_boots": 350,
-        "netherite_helmet": 400,
-        "netherite_chestplate": 590,
-        "netherite_leggings": 550,
-        "netherite_boots": 500,
-    
-    "dirt_house": ["1 house", "dirt" ,"dirt_house"] ,
-    "wooden_house":  ["2 house", "wooden", "wooden_house"] , 
-    "stone mansion":  ["3 house", "stone", "mansion", "stone mansion"] ,
-    "modern_apartment":  ["4 house", "modern", "apartment", "modern_apartment"] ,
-    "castle-e-minecraft":  [" 5 house", "castle", "minecraft", "castle-e-minecraft"]
-  }
+        "fishing_rod": [
+            "frod"
+        ],
+        "wooden_sword": [
+            "wsword"
+        ],
+        "wooden_pickaxe": [
+            "wpick"
+        ],
+        "wooden_axe": [
+            "waxe"
+        ],
+        "wooden_shovel": [
+            "wshovel"
+        ],
+        "wooden_hoe": [
+            "whoe"
+        ],
+        "stone_sword": [
+            "ssword"
+        ],
+        "stone_pickaxe": [
+            "spick"
+        ],
+        "stone_axe": [
+            "saxe"
+        ],
+        "stone_shovel": [
+            "sshovel"
+        ],
+        "stone_hoe": [
+            "shoe"
+        ],
+        "iron_sword": [
+            "isword"
+        ],
+        "iron_pickaxe": [
+            "ipick"
+        ],
+        "iron_axe": [
+            "iaxe"
+        ],
+        "iron_shovel": [
+            "ishovel"
+        ],
+        "iron_hoe": [
+            "ihoe"
+        ],
+        "gold_sword": [
+            "gsword"
+        ],
+        "gold_pickaxe": [
+            "gpick"
+        ],
+        "gold_axe": [
+            "gaxe"
+        ],
+        "gold_shovel": [
+            "gshovel"
+        ],
+        "gold_hoe": [
+            "ghoe"
+        ],
+        "diamond_sword": [
+            "dsword"
+        ],
+        "diamond_pickaxe": [
+            "dpick"
+        ],
+        "diamond_axe": [
+            "daxe"
+        ],
+        "diamond_shovel": [
+            "dshovel"
+        ],
+        "diamond_hoe": [
+            "dhoe"
+        ],
+        "netherite_sword": [
+            "nsword"
+        ],
+        "netherite_pickaxe": [
+            "npick"
+        ],
+        "netherite_axe": [
+            "naxe"
+        ],
+        "netherite_shovel": [
+            "nshovel"
+        ],
+        "netherite_hoe": [
+            "nhoe"
+        ],
+        "leather_helmet": [
+            "lhelmet"
+        ],
+        "leather_chestplate": [
+            "lchest"
+        ],
+        "leather_leggings": [
+            "lleg"
+        ],
+        "leather_boots": [
+            "lboots"
+        ],
+        "iron_helmet": [
+            "ihelmet"
+        ],
+        "iron_chestplate": [
+            "ichest"
+        ],
+        "iron_leggings": [
+            "ileg"
+        ],
+        "iron_boots": [
+            "iboots"
+        ],
+        "gold_helmet": [
+            "ghelmet"
+        ],
+        "gold_chestplate": [
+            "gchest"
+        ],
+        "gold_leggings": [
+            "gleg"
+        ],
+        "gold_boots": [
+            "gboots"
+        ],
+        "diamond_helmet": [
+            "dhelmet"
+        ],
+        "diamond_chestplate": [
+            "dchest"
+        ],
+        "diamond_leggings": [
+            "dleg"
+        ],
+        "diamond_boots": [
+            "dboots"
+        ],
+        "netherite_helmet": [
+            "nhelmet"
+        ],
+        "netherite_chestplate": [
+            "nchest"
+        ],
+        "netherite_leggings": [
+            "nleg"
+        ],
+        "netherite_boots": [
+            "nboots"
+        ],
+        "dirt_house": [
+            "1 house",
+            "dirt",
+            "dirt_house"
+        ],
+        "wooden_house": [
+            "2 house",
+            "wooden",
+            "wooden_house"
+        ],
+        "stone_mansion": [
+            "3 house",
+            "stone",
+            "mansion",
+            "stone mansion"
+        ],
+        "modern_apartment": [
+            "4 house",
+            "modern",
+            "apartment",
+            "modern_apartment"
+        ],
+        "castle-e-minecraft": [
+            " 5 house",
+            "castle",
+            "minecraft",
+            "castle-e-minecraft"
+        ],
+        "miniature_farm": [
+            "mini",
+            "miniature"
+        ],
+        "smol_farm": [
+            "smol",
+            "small"
+        ],
+        "normal_farm": [
+            "normal"
+        ],
+        "big_farm": [
+            "big"
+        ],
+        "giant_farm": [
+            "giant"
+        ],
+        "xp_farm": [
+            "xp"
+        ],
+        "shaft_mine": [
+            "shaft",
+            "mine"
+        ],
+        "nether_portal": [
+            "nether",
+            "portal"
+        ]
+    },
+    "build": {
+        "dirt_house": {
+            "dirt": 15,
+            "plank": 6
+        },
+        "wooden_house": {
+            "plank": 128,
+            "log": 30,
+            "wooden_stairs": 6
+        },
+        "stone_mansion": {
+            "dirt": 30,
+            "cobblestone": 128,
+            "stone": 128,
+            "andesite": 30,
+            "diorite": 30,
+            "glass": 30
+        },
+        "modern_apartment": {
+            "quartz_block": 64,
+            "glass": 64,
+            "quartz_stair": 15,
+            "dirt": 64
+        },
+        "castle-e-minecraft": {
+            "stone": 640,
+            "cobblestone": 320,
+            "andesite": 64,
+            "diorite": 64,
+            "dirt": 64,
+            "glass": 64,
+            "stone_stair": 64,
+            "redstone_dust": 64
+        },
+        "miniature_farm": [
+            "dirt_house",
+            "wooden_hoe"
+        ],
+        "smol_farm": [
+            "wooden_house",
+            "stone_hoe"
+        ],
+        "normal_farm": [
+            "stone_mansion",
+            "iron_hoe"
+        ],
+        "big_farm": [
+            "modern_apartment",
+            "gold_hoe"
+        ],
+        "giant_farm": [
+            "castle-e-minecraft",
+            "diamond_hoe"
+        ],
+        "xp_farm": {
+            "cobblestone": 1000,
+            "chest": 4
+        },
+        "shaft_mine": {
+            "iron_pickaxe": 125
+        },
+        "nether_portal": {
+            "obsidian": 14
+        }
+    },
+    "tips": [
+        "Join Minecord Official Server for exciting rewards.",
+        "Always keep an eye on your health and hunger."
+    ],
+    "craft": {
+        "stick": {"plank":1},
+        "netherite_ingot": {"netherite_scarp": 4, "gold_ingot":4},
+        "bow": {"stick": 3, "web":1},
+        "fishing_rod": {"stick":3, "web":2},
+        "wooden_sword":{ "plank": 2, "stick": 1},
+        "wooden_pickaxe": { "plank": 3, "stick": 2},
+        "wooden_axe": {"plank":3, "stick":2},
+        "wooden_shovel": {"plank":1, "stick":2},
+        "wooden_hoe": {"plank":2, "stick":2},
+        "stone_sword": { "cobblestone": 2, "stick": 1},
+        "stone_pickaxe": { "cobblestone": 3, "stick": 2},
+        "stone_axe": {"cobblestone":3, "stick":2},
+        "stone_shovel": {"cobblestone":1, "stick":2},
+        "stone_hoe": {"cobblestone":2, "stick":2},
+        "iron_sword": { "iron_ingot": 2, "stick": 1},
+        "iron_pickaxe": { "iron_ingot": 3, "stick": 2},
+        "iron_axe": {"iron_ingot":3, "stick":2},
+        "iron_shovel": {"iron_ingot":1, "stick":2},
+        "iron_hoe": {"iron_ingot":2, "stick":2},
+        "gold_sword": { "gold_ingot": 2, "stick": 1},
+        "gold_pickaxe": { "gold_ingot": 3, "stick": 2},
+        "gold_axe": {"gold_ingot":3, "stick":2},
+        "gold_shovel": {"gold_ingot":1, "stick":2},
+        "gold_hoe": {"gold_ingot":2, "stick":2},
+        "diamond_sword": { "diamond": 2, "stick": 1},
+        "diamond_pickaxe": { "diamond": 3, "stick": 2},
+        "diamond_axe": {"diamond":3, "stick":2},
+        "diamond_shovel": {"diamond":1, "stick":2},
+        "diamond_hoe": {"diamond":2, "stick":2},
+        "netherite_sword": { "nethrite_ingot": 2, "stick": 1},
+        "netherite_pickaxe": { "netherite_ingot": 3, "stick": 2},
+        "netherite_axe": {"netherite_ingot":3, "stick":2},
+        "netherite_shovel": {"netherite_ingot":1, "stick":2},
+        "netherite_hoe": {"netheritr_ingot":2, "stick":2},
+        "leather_helmet": {"leather":5},
+        "leather_chestplate": {"leather": 8},
+        "leather_leggings": {"leather": 7},
+        "leather_boots": {"leather":4},
+        "iron_helmet": {"iron_ingot":5},
+        "iron_chestplate": {"iron_ingot":88},
+        "iron_leggings": {"iron_ingot":7 },
+        "iron_boots": {"iron_ingot":4},
+        "gold_helmet": {"gold_ingot":5},
+        "gold_chestplate": {"gold_ingot":8},
+        "gold_leggings": {"gold_ingot":7},
+        "gold_boots": {"gold_ingot":4},
+        "diamond_helmet": {"diamond":5},
+        "diamond_chestplate": {"diamond":8},
+        "diamond_leggings": {"diamond":7},
+        "diamond_boots": {"diamond":4},
+        "netherite_helmet": {"netherite_ingot":5},
+        "netherite_chestplate": {"netherite_ingot":8},
+        "netherite_leggings": {"netherite_ingot":7 },
+        "netherite_boots": {"netherite_ingot":4},
+        "chest": {"plank":8},
+        "wooden_stair": {"plank":7},
+        "stone_stair": {"stone": 7},
+        "cobblestone_stair": {"cobblestone": 7}
+        "quartz_stair":{"nether_quarts": 7},
+        "crafting_table": {"planks": 4},
+        "plank": {"log":1}
+    }
 }
-
