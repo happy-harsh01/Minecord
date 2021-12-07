@@ -9,8 +9,8 @@ from dislash import ActionRow, Button, ButtonStyle
 game = GameFunction()
 func = Func()
 
-profiles = "cogs//functions//main_resources//profiles.json"
-channel = "cogs//functions//main_resources//channels.json"
+profiles = "main_resources//profiles.json"
+channel = "main_resources//channels.json"
 
 
 class Misc(commands.Cog):
