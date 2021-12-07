@@ -12,8 +12,8 @@ from dislash import ActionRow, Button, ButtonStyle, SelectMenu, SelectOption
 func = Func()
 is_over_channel = func.is_over_channel
 game = GameFunction()
-profile = "cogs/functions/main_resources/profiles.json"
-info = "cogs/functions/main_resources/info.json"
+profile = "main_resources/profiles.json"
+info = "main_resources/info.json"
 
 events = GameFunction()
 
