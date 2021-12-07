@@ -14,19 +14,66 @@ profiles = "cogs//functions//main_resources//profiles.json"
 channels = "cogs//functions//main_resources//channels.json"
 info =  "cogs/functions/main_resources/info.json"
 
-mine_no = {"Netherite Pickaxe":"20-30","Diamond Pickaxe":"20-25",
-"Gold Pickaxe":"15-25",'Iron Pickaxe':"10-15", 'Stone Pickaxe': '1-10',"Wooden Pickaxe":"1-5"}
-
 class Action(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot        
 
     @commands.command()
-    async def eat(self, ctx):
-        await ctx.send("This command is yet to be made!\nSorry :(")
+    async def eat(self, ctx, eatable=None, quantity= None):
+      with open(profiles, "r")as f:
+        profile = json.load(f)
+        inv = profile[str(ctx.author.id)]["inv"]
+      with open(info, "r")as f:
+        data = json.load(f)
+      if eatable is None:
+        msg = await ctx.send("Loading Eatable Food items from your inventory")
+        while True:
+          buttons = [] 
+          em = discord.Embed(title= "Eat Command", description = "All eatable items from your inventory are here\nClick on button on eat an item.\nIf there is not button which means you have nothing to eat.", colour= discord.Colour.green())
+          em.add_field(name="Health", value=await game.hearts(ctx))
+          em.add_field(name="Hunger", value=await game.food(ctx))
+          for item in inv:
+            if item in data["food"] and item!= "wheat" and item!="spider_eye" and item!="sugarcane":
+              buttons.append(ActionRow(Button( label=item.replace("_"," ").capitalize()+ f" X {inv[item]}" , style=ButtonStyle.blurple, custom_id = item)))
+          await msg.edit(content=None, embed=em, components= buttons)
+          try:
+            waiter = await msg.wait_for_button_click(check = lambda x : x.author.id == ctx.author.id, timeout= 30)
+          except asyncio.TimeoutError:
+            await msg.edit(embed= discord.Embed(title= "Interaction Ended", description="***: )***\nThanks for using Minecord.", colour= discord.Colour.light_grey()), components = [])
+            return
+          button=waiter.clicked_button.custom_id
+          health_increase = random.randint(1,20)
+          await game.inv_manager(ctx, button, -1)
+          game.food_level(ctx,health_increase)
+      else:
+        eatable = await game.get_id(eatable)
+        if eatable is None:
+          await ctx.send("The item you are trying to eat doesn't exists")
+          return
+        if not eatable in inv:
+          await ctx.send("You don't even own this item")
+          return
+        if isinstance(int, quantity):
+          if inv[eatable] < quantity:
+            await ctx.send("Too large quantity")
+            return
+        elif quantity == "max" or quantity == "all":
+          quantity = inv[eatable]
+        else:
+          await ctx.send("Quantity is not defined or invalid quantity.\nQuantity can be number or ```max``` or ```all```.")
+          return      
+        health_increase = data["food_health"][eatable] * quantity
+        await game.inv_manager(eatable, -quantity)
+        await game.food_level(health_increase)
+        food_name = eatable.replace("_"," ").capitalize ()
+        msg = await ctx.send(f"You ate {quantity}  {food_name}", components=Button(label= "Check Health", style=ButtonStyle.blurple, custom_id= "health_check_button") )
+        waiter = await self.client.wait_for_button_click(check = lambda x : x.autuor.id == ctx.author.id, timeout= 30)
+        cmd = await self.client.get_command("health")
+        await ctx.invoke(cmd, ctx)
 
     @commands.command()
     async def test(self, ctx):
+        raise asyncio.TimeoutError
         emoji = self.bot.get_emoji(898892686831017984) 
         msg = await ctx.send(
         f"{emoji} :x: This message has a select menu!",
@@ -45,36 +92,44 @@ class Action(commands.Cog):
     )
         def check(m):
           return m.author == ctx.author  
-        inter = await msg.wait_for_dropdown(check=check)
+        '''inter = await msg.wait_for_dropdown(check=check)
         labels = inter.select_menu.selected_options
-        await inter.reply(f"Your choices: {labels[0].label}")            
+        await inter.reply(f"Your choices: {labels[0].label}")'''
+        @self.bot.event()
+        async def wait_for_dropdown(argument):
+          print(argument)
+          await ctx.send("Woah it worked")
       
     @commands.command()
-    async def go(self, ctx, location = None):
+    async def go(self, ctx, location=None):
       with open(profiles, "r")as f:
-        profile = json.load(f)
-        places = profile[str(ctx.author.id)]["places"]
+        profile = json.load(f)[str(ctx.author.id)]
+        places = profile["places"]
       if location is None:
-        actionRow = []
-        #Creating Buttons according to places user has discovered
-        i = 1 
+        components = []
         for place in places:
-          button = Button(
-            label = place,
-            custom_id = f"button{i}",
-            style = ButtonStyle.blurple 
-          )
-          i += 1
-          actionRow.append(button)
-        print(ActionRow(actionRow))
-        await ctx.send("Where do you wanna go ?\nClick on one of the buttons below", components = [ActionRow(actionRow)] )
-        return
+          components.append(ActionRow( Button( label= place.replace("_"," ").capitalize(), style = ButtonStyle.blurple, custom_id = place)))
+        em = discord.Embed(title="Location to Go", description="Where do you want to go ?\nClick on button to go to a place.", colour= discord.Colour.blue())
+        em.set_footer(text= "Use command location to know your location", url= ctx.author.url)
+        msg= await ctx.send(embed=em, components= components)
+        try:
+          waiter = msg.wait_for_button_click(check = lambda x: x.author.id == ctx.author.id, timeout= 30)
+        except asyncio.TimeoutError:
+          msg.edit(embed= discord.Embed(title="Interaction Ended" , description="***: )***\nThanks for using Minecord", colour = discord.Colour.light_grey()))
+          return
+        location = waiter.clicked_button_cutom_id      
+        location = await game.get_id(location)
+        location_name = location.replace("_"," ").capitalize()
+      await ctx.send(f"You went to {location_name}", file = open(f"cogs/assets/{location}.png"))
+      await game.location(location)
 
     @commands.command(alias="inventory" )
     async def inv(self, ctx):
         with open (profiles, 'r')as f:
           profile = json.load(f)
           inv = profile[str(ctx.author.id)]["inv"]
+        with open(info,"r")as f:
+          data = json.load(f) 
         target = 0
         size = 0        
         for i in list(inv.keys()):
@@ -82,122 +137,86 @@ class Action(commands.Cog):
         if size == 0:
           await ctx.reply("You have nothing in your inventory.")
           return
+        def get_type(id):
+          for keys in data:
+            if id in data[keys]:
+              return keys
+        def get_filter_size(id):
+          size = 0 
+          for i in inv:
+            if i in data[id]:
+              size += 1
         page = 1
         max_page =  int(size/5)
         filter = None 
         if size%5 != 0:
           max_page += 1
-        text = f"Use m!info [item] to get info on an item - Page {page} of {max_page}" 
-        with open(info, "r") as f:
-          data = json.load(f) 
-        embed = discord.Embed(title=f"{ctx.author.name}'s inventory", description="Inventory Items")
-        embed.set_footer(text=text, icon_url=ctx.author.avatar_url)
-        
+        pages = []
+        target = 0
+        for i in range(max_page):
+          em = discord.Embed(title= f"{ctx.author.name}'s inventory", description = "Inventory Items", colour=discord.Colour.green() )
+          if max_page > (i+1):
+            items = 5 
+          elif max_page == (i+1):
+            remaining =  size%5
+            if remaining == 0:
+              items = 5 
+            else:
+              items = remaining 
+          for item in range(items):
+              id = list(inv.keys())[target] 
+              name = id.replace( "_"," ").capitalize()
+              emoji = data["id"][id]
+              em.add_field(name = f"{target+1}) {emoji} {name} - {inv[id]}", value= f"ID ```{list(inv.keys())[target]}``` - {get_type(id)} - [Click here for item info](https://github.com/)", inline=False )
+              target += 1
+          em.set_footer(text=f"Use m!info [item] to get info on an item - Page {page+i} of {max_page}", icon_url=ctx.author.avatar_url)
+          pages.append(em)   
+         
         #Creating Buttons
         fd = Button(style = ButtonStyle.blurple, label= "»", custom_id = "fd")
         bk = Button(style = ButtonStyle.blurple, label= "«", custom_id = "bk")
         fd_disabled = Button(style = ButtonStyle.grey, label= "»", custom_id = "fd_disabled", disabled=True )
         bk_disabled = Button(style = ButtonStyle.grey, label= "«", custom_id = "bk_disabled",disabled=True)
-
+        #Creating Select Menu.
+        filter_bar = SelectMenu(custom_id="filter",
+                placeholder="Choose up to 1 option.",
+                max_values=1,
+                options=[SelectOption("Blocks","block"),SelectOption("Jewel","jewels"), SelectOption("Usables","usables"), SelectOption("Food","food") ,                 SelectOption("Tools","tools"), SelectOption("Armour","armour")]) 
+        
         #Sending Message
-        if size <=  5:
-          for i in list(inv.keys()):
-            for j in list(data.keys()):
-              if i in data[j]:
-                name = i.replace("_", " ")
-                name = name.capitalize()
-                emoji = data["id"][list(inv.keys())[i]] 
-                embed.add_field(name = f"{target+1}) {emoji} {name} - {inv[i]}", value= f"ID ```{list(inv.keys())[i]}``` - {j}")
-                
-            await ctx.reply(embed = embed, components = [ActionRow(bk_disabled, fd_disabled)] )    
-            return
-        for i in range(target, target + 5):
-          for j in list(data.keys()):           
-            if list(inv.keys())[i] in data[j]:
-              name = list(inv.keys())[i].replace("_", " ")
-              name = name.capitalize()
-              emoji = data["id"][list(inv.keys())[i]] 
-              embed.add_field(name= f"{target+1}) {emoji} {name} - {inv[list(inv.keys())[i]]}", value= f"ID ```{list(inv.keys())[i]}``` - {j}")
-              target += 1
-              break           
-        msg = await ctx.reply(embed=embed, components= [ActionRow(bk_disabled, fd )]  )
-        def check(m):
-          return m.author.id == ctx.author.id and m.channel.id == ctx.channel.id
+        if max_page ==  1:
+          fd2 = fd_disabled
+          await ctx.send(embed=pages[0], components=[ActionRow(bk_disabled, fd2)])
+          return
+        else:
+          fd2 = fd 
+        msg = await ctx.send(embed=pages[0], components=[filter_bar, ActionRow(bk_disabled, fd2)])
         while True:
-          print("Target = ",target)
           try:
-            waiter = await msg.wait_for_button_click(check=check, timeout = 30.0  )
-          except asyncio.TimeoutError:
-            await msg.edit(embed=embed, components=[ActionRow(bk_disabled, fd_disabled)])
+            def check(m):
+              return m.author.id == ctx.author.id  
+            waiter, pending = await asyncio.wait([ 
+              msg.wait_for_button_click(check=check, timeout = 30.0),
+              msg.wait_for_dropdown(check=check, timeout=30.0 )
+            ],                        return_when=asyncio.FIRST_COMPLETED)
+          except asyncio.TimeoutError:       
+            await msg.edit(embed=discord.Embed(title= "Interaction Ended", description="***: )***\nThanks for using Minecord",colour= discord.Colour.blue()), components=[ActionRow(bk_disabled, fd_disabled)])
             return
+          for i in waiter:
+            print(i.result)
           button = waiter.clicked_button.label
-
-          #Monitoring Forward Button Click
+          backward = bk
+          forward = fd  
           if button ==  "»":
             page += 1
-            if target == 0:
-              target = 5 
-            button2 = fd                       
-            i = 0      
-            while True:
-              print("i ",i, target)
-              item = list(inv.keys())[target]
-              if filter != None:
-                if not item in data[filter]:
-                  target += 1
-                  continue
-              emoji = data["id"][item]   
-              name = item.replace("_"," ").capitalize()
-              embed.set_field_at(i, name= f"{target+1}) {emoji} {name} - {inv[item]}", value= f"ID ```{item}``` - {func.item_type(item)}")
-              target += 1                           
-              if i == 4:  
-                break
-              i += 1 
-              if target == size:
-                button2 = fd_disabled
-                if i != 4:
-                  y = 4 
-                  for i in range(i,5):
-                    embed.remove_field(y)
-                    y -= 1 
-                    print("removed ",i)
-                break
-            embed.set_footer(text=f"Use m!info [item] to get info on an item - Page {page} of {max_page}", icon_url=ctx.author.avatar_url)  
-            await msg.edit(embed=embed, components=[ActionRow(bk, button2)]  )  
-          
-        #Monitoring Backward Button Click
+            if page == max_page:
+              forward = fd_disabled 
           elif button == "«":
             page -= 1
-            button1 = bk             
-            i = 0
-            if target == size:
-              print("max size reached", size%5)
-              target -= size%5
-              print(target)         
-            while True:
-              item = list(inv.keys())[target]
-              if filter != None:
-                if not item in data[filter]:
-                  target -= 1
-                  continue
-              emoji = data["id"][item]
-              name = item.replace("_"," ").capitalize()
-              try:
-                embed.set_field_at(i, name= f"{target+1}) {emoji} {name} - {inv[item]}", value= f"ID ```{item}``` - {func.item_type(item)}")
-              except IndexError:
-                embed.add_field( name= f"{target+1}) {emoji} {name} -{inv[item]}", value= f"ID ```{item}``` - {func.item_type(item)}")
-              i += 1               
-              if i == 4:
-                break
-              target -= 1
-              if target == 0:
-                button1 = bk_disabled
-                break
-            embed.set_footer(text=f"Use m!info [item] to get info on an item - Page {page} of {max_page}", icon_url=ctx.author.avatar_url)
-            await msg.edit(embed=embed, components=[ActionRow(button1,fd)]  )
+            if page == 1:
+              backward = bk_disabled
+          await msg.edit(embed = pages[page-1], components = [ActionRow(backward, forward)] )                        
                     
-                    
-
     @commands.command()
     async def craft(self, ctx, item):
         await ctx.send("This command is yet to be made!\nSorry :(")
@@ -446,8 +465,27 @@ class Action(commands.Cog):
       with open(profiles, "w") as f:
         json.dump(profile, f, indent=4)
       await ctx.send("Item thrown from inventory")
-       
+
+    @commands.command()
+    async def use(self, ctx, item):
+      item = await game.get_id(item)
+      if item is None:
+        await ctx.reply("The item you are looking for dosen't exsists")
+        return
+      with open(profiles, "r") as f:
+        profile = json.load(f)[str(ctx.author.id)]
+        inv = profile["inv"]
+      if not item in inv:
+        await ctx.reply("That item isn't in your inventory lmao")
+        return
+      with open(info, "r") as f:
+        data = json.load(f)
+      if item in data["armour"]:
+        pass
+      elif item in data["usables"]:
+        pass
+      else:
+        await ctx.reply("You cant use that item")
 
 def setup(bot):
     bot.add_cog(Action(bot))
-
