@@ -27,7 +27,7 @@ class Misc(commands.Cog):
           Button(
             style = ButtonStyle.link,
             label = "Invite",
-            url = discord.utils.oauth_url(self.client.user.id)),
+            url = discord.utils.oauth_url(self.client.user.id, permissions= discord.Permissions(414467873393))),
           Button(
             style = ButtonStyle.link,
             label = "Vote",
@@ -56,7 +56,10 @@ class Misc(commands.Cog):
           profile = json.load(f)
         health = profile[str(ctx.author.id)]["health"]
         max_health = profile[str(ctx.author.id)]["max_health"]
-        await ctx.reply(embed = discord.Embed(title=f"{ctx.author.name}'s health", description= f"{health} / {max_health}", colour= discord.Colour.red()).set_footer(text= f"{ctx.author}", icon_url = ctx.author.avatar_url))
+        heart = await game.hearts(ctx)
+        foods = await game.food(ctx)
+        food = profile[str(ctx.author.id)]["food"]
+        await ctx.reply(embed = discord.Embed(title=f"{ctx.author.name}'s health", description= f"{health} {heart} {max_health}\n{food} {foods} 100", colour= discord.Colour.red()).set_footer(text= f"{ctx.author}", icon_url = ctx.author.avatar_url))
     
     @commands.command()
     async def profile(self, ctx, user: discord.Member = None):
@@ -85,7 +88,7 @@ class Misc(commands.Cog):
           for key, value in profile["armour"]:
             descrip +=  f"  • {key} : {value}\n"
         url = user.avatar_url 
-        em = discord.Embed(title= f"{ctx.author.name}'s Profile", description= descrip, colour = discord.Colour.blue())
+        em = discord.Embed(title= f"{user.name}'s Profile", description= descrip, colour = discord.Colour.blue())
         em.set_thumbnail(url = str(url))        
         em.set_footer(text= f"Profile Requested by {ctx.author}" , icon_url= url )
         msg = await ctx.send(embed=em, components = [ActionRow(proceed_button)])
@@ -169,6 +172,14 @@ class Misc(commands.Cog):
       await ctx.send(embed= em, components = [ ActionRow(
         Button(style = ButtonStyle.link, label = "Vote", url = "https://top.gg/bot/896308161831657492" )
       )])
+
+    @commands.command(alias="dev")
+    async def developer(self,ctx):
+      em = discord.Embed(title = "Mr.Harsh", description = "Hi, I make Bots like this, Vote and show support.\nID : Mr.Harsh#3188", colour = discord.Colour.dark_blue())
+      em.set_thumbnail(url= (self.client.get_user(894072003533877279).avatar_url))
+      invite = Button( label= "Invite", style=ButtonStyle.link, url = discord.utils.oauth_url(self.client.user.id))
+      github = Button( label= "Mr-Harsh-Codes", style=ButtonStyle.link, url = "https://github.com/mr-harsh-codes" )
+      await ctx.send(embed=em, components = [ActionRow(invite, github)])
   
 def setup(client):
     client.add_cog(Misc(client))  
