@@ -19,7 +19,7 @@ class Help(commands.Cog):
             "Over World Commands": "```cave, fish, crop, enchant, trade, take, chest, build```",
             "Game Settings Commands": "```start, delete, change_name```",
             "Setup Commands": "```quick_setup, auto_setup, add_restricted_chan, set_over_chan, set_nether_chan, set_end_chan```"}
-            await func.send_embed(ctx, cmd+" Command",'',"red",fields=fields_dict, footer=True )
+            await func.send_embed(ctx, cmd+" Command",'',"green",fields=fields_dict, footer=True )
             return 
         else:    
             if not cmd in help:
@@ -29,7 +29,7 @@ class Help(commands.Cog):
                 if cmd.lower() in help_cmd:
                     fields_dict = {help_cmd: help[help_cmd]}
                     break                 
-        await func.send_embed(ctx, cmd+" Command",'',"red",fields=fields_dict, footer=True)
+        await func.send_embed(ctx, cmd+" Command",'',"green",fields=fields_dict, footer=True)
       
 def setup(client):
     client.add_cog(Help(client))
