@@ -10,9 +10,9 @@ from dislash import InteractionClient, ActionRow, Button, ButtonStyle, SelectMen
 
 game = GameFunction()
 func = Func()
-profiles = "cogs//functions//main_resources//profiles.json"
-channels = "cogs//functions//main_resources//channels.json"
-info =  "cogs/functions/main_resources/info.json"
+profiles = "main_resources//profiles.json"
+channels = "main_resources//channels.json"
+info =  "main_resources/info.json"
 
 class Action(commands.Cog):
     def __init__(self, bot: commands.Bot):
