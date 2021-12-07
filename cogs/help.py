@@ -11,7 +11,7 @@ class Help(commands.Cog):
 
     @commands.command()
     async def help(self, ctx,*, cmd=None):
-        with open ("cogs//functions//main_resources//help.json", 'r') as f:
+        with open ("main_resources//help.json", 'r') as f:
                 help = json.load(f)
         if cmd is None:
             cmd = "Help" 
